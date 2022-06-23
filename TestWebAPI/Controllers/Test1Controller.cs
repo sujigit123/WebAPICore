@@ -1,21 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TestWebAPI.Filters;
 using TestWebAPI.Models;
 using TestWebAPI.Services;
 
 namespace TestWebAPI.Controllers
 {
-    [Route("api/{v:apiVersion}/[controller]")]    
+    [Route("api/{v:apiVersion}/[controller]")]
     [ApiController]
-    [ApiVersion("2.0")]
-    public class TestController : ControllerBase
+    [ApiVersion("1.0")]
+    public class Test1Controller : Controller
     {
         private readonly IServiceLayer _services;
 
-        public TestController(IServiceLayer services)
+        public Test1Controller(IServiceLayer services)
         {
             _services = services;
-        }        
+        }
 
         [HttpGet("{key}")]
         [ValidateKey]
@@ -26,7 +30,7 @@ namespace TestWebAPI.Controllers
 
         [HttpPost("{key}")]
         [ValidateKey]
-        public int Add(string key,RequestPayload requestPayload)
+        public int Add(string key, RequestPayload requestPayload)
         {
             return _services.AddData(key, requestPayload);
         }
@@ -36,6 +40,6 @@ namespace TestWebAPI.Controllers
         public int Update(string key, RequestPayload requestPayload)
         {
             return _services.UpdateData(key, requestPayload);
-        }        
+        }
     }
 }

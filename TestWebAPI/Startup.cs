@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +25,13 @@ namespace TestWebAPI
         {
             services.AddDbContext<APIContext>(opt => opt.UseInMemoryDatabase(Configuration.GetConnectionString("TestDB")));
             services.AddControllers();
+            services.AddApiVersioning(x =>
+            {
+                x.DefaultApiVersion = new ApiVersion(1, 0);
+                x.AssumeDefaultVersionWhenUnspecified = true;
+                x.ReportApiVersions = true;
+                x.ApiVersionReader = new HeaderApiVersionReader("x-api-versionwa");
+            });
             services.AddTransient<IServiceLayer, ServiceLayer>();
             services.AddSwaggerGen(options =>
             {
